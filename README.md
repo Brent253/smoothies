@@ -27,3 +27,10 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### View project url
+```
+https://smoothies-411ed.web.app/
+```
+
+
