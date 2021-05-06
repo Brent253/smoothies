@@ -30,7 +30,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### View project url
 ```
-https://smoothies-411ed.web.app/
+https://smoothies-d8847.web.app
 ```
 
 

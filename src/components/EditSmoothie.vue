@@ -6,10 +6,20 @@
         <label for="title">Smoothie Title:</label>
         <input type="text" name="title" v-model="smoothie.title" />
       </div>
-      <div v-for="(ing, index) in smoothie.ingredients" :key="index" class="field">
+      <div
+        v-for="(ing, index) in smoothie.ingredients"
+        :key="index"
+        class="field"
+      >
         <label for="ingredient">Ingredient:</label>
-        <input type="text" name="ingredient" v-model="smoothie.ingredients[index]" />
-        <i class="material-icons delete" @click="deleteIngredient(ing)">delete</i>
+        <input
+          type="text"
+          name="ingredient"
+          v-model="smoothie.ingredients[index]"
+        />
+        <i class="material-icons delete" @click="deleteIngredient(ing)"
+          >delete</i
+        >
       </div>
       <div class="field add-ingredient">
         <label for="add-ingredient">Add an ingredient:</label>
@@ -24,6 +34,11 @@
         <p v-if="feedback" class="red-text">{{ feedback }}</p>
         <button class="btn pink">Update Smoothie</button>
       </div>
+      <div>
+        <p>
+          Press tab after adding ingredient then 'Update Smoothie' to finish
+        </p>
+      </div>
     </form>
   </div>
 </template>
@@ -37,7 +52,7 @@ export default {
     return {
       smoothie: null,
       another: null,
-      feedback: null
+      feedback: null,
     };
   },
 
@@ -45,8 +60,8 @@ export default {
     let ref = db
       .collection("smoothies")
       .where("slug", "==", this.$route.params.smoothie_slug);
-    ref.get().then(snapshot => {
-      snapshot.forEach(doc => {
+    ref.get().then((snapshot) => {
+      snapshot.forEach((doc) => {
         this.smoothie = doc.data();
         this.smoothie.id = doc.id;
       });
@@ -54,31 +69,34 @@ export default {
   },
 
   methods: {
-      EditSmoothie() {
-             //console.log(this.title, this.ingredients);
+    EditSmoothie() {
+      //console.log(this.title, this.ingredients);
       if (this.smoothie.title) {
         this.feedback = null;
         //create a slug
         this.smoothie.slug = slugify(this.smoothie.title, {
           replacement: "-",
           remove: /[$*_+~.()'"!\-:@]/g, //Remove all these characters globally reg exp
-          lower: true //resulting slug lowercase
+          lower: true, //resulting slug lowercase
         });
-        db.collection("smoothies").doc(this.smoothie.id).update({
-          title: this.smoothie.title,
-          ingredients: this.smoothie.ingredients,
-          slug: this.smoothie.slug
-        })
-        .then(() => {
-            this.$router.push({ name: 'Home'} )
-        }).catch(err => {
+        db.collection("smoothies")
+          .doc(this.smoothie.id)
+          .update({
+            title: this.smoothie.title,
+            ingredients: this.smoothie.ingredients,
+            slug: this.smoothie.slug,
+          })
+          .then(() => {
+            this.$router.push({ name: "Home" });
+          })
+          .catch((err) => {
             console.log(err);
-        })
+          });
       } else {
         this.feedback = "You must enter a smoothie title";
       }
-      },
-         addIngredient() {
+    },
+    addIngredient() {
       if (this.another) {
         this.smoothie.ingredients.push(this.another);
         this.another = null;
@@ -89,11 +107,13 @@ export default {
     },
 
     deleteIngredient(ing) {
-        this.smoothie.ingredients = this.smoothie.ingredients.filter(ingredient => {
-            return ingredient != ing;
-        })
-    }
-  }
+      this.smoothie.ingredients = this.smoothie.ingredients.filter(
+        (ingredient) => {
+          return ingredient != ing;
+        }
+      );
+    },
+  },
 };
 </script>
 
@@ -115,11 +135,11 @@ export default {
 }
 
 .edit-smoothie .delete {
-    position: absolute;
-    right: 0;
-    bottom: 16px;
-    color: #aaa;
-    font-size: 1.4em;
-    cursor: pointer;
+  position: absolute;
+  right: 0;
+  bottom: 16px;
+  color: #aaa;
+  font-size: 1.4em;
+  cursor: pointer;
 }
 </style>

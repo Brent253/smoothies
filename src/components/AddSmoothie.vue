@@ -9,7 +9,9 @@
       <div v-for="(ing, index) in ingredients" :key="index" class="field">
         <label for="ingredient">Ingredient:</label>
         <input type="text" name="ingredient" v-model="ingredients[index]" />
-        <i class="material-icons delete"@click="deleteIngredient(ing)">delete </i>
+        <i class="material-icons delete" @click="deleteIngredient(ing)"
+          >delete
+        </i>
       </div>
       <div class="field add-ingredient">
         <label for="add-ingredient">Add an ingredient:</label>
@@ -23,6 +25,9 @@
       <div class="field center-align">
         <p v-if="feedback" class="red-text">{{ feedback }}</p>
         <button class="btn pink">Add Smoothie</button>
+      </div>
+      <div>
+        <p>Press tab after adding ingredient then 'Add Smoothie' to finish</p>
       </div>
     </form>
   </div>
@@ -39,7 +44,7 @@ export default {
       another: null,
       ingredients: [],
       feedback: null,
-      slug: null
+      slug: null,
     };
   },
   methods: {
@@ -51,18 +56,20 @@ export default {
         this.slug = slugify(this.title, {
           replacement: "-",
           remove: /[$*_+~.()'"!\-:@]/g, //Remove all these characters globally reg exp
-          lower: true //resulting slug lowercase
+          lower: true, //resulting slug lowercase
         });
-        db.collection("smoothies").add({
-          title: this.title,
-          ingredients: this.ingredients,
-          slug: this.slug
-        })
-        .then(() => {
-            this.$router.push({ name: 'Home'} )
-        }).catch(err => {
+        db.collection("smoothies")
+          .add({
+            title: this.title,
+            ingredients: this.ingredients,
+            slug: this.slug,
+          })
+          .then(() => {
+            this.$router.push({ name: "Home" });
+          })
+          .catch((err) => {
             console.log(err);
-        })
+          });
       } else {
         this.feedback = "You must enter a smoothie title";
       }
@@ -79,11 +86,11 @@ export default {
     },
 
     deleteIngredient(ing) {
-        this.ingredients = this.ingredients.filter(ingredient => {
-            return ingredient != ing;
-        })
-    }
-  }
+      this.ingredients = this.ingredients.filter((ingredient) => {
+        return ingredient != ing;
+      });
+    },
+  },
 };
 </script>
 
@@ -105,11 +112,11 @@ export default {
 }
 
 .add-smoothie .delete {
-    position: absolute;
-    right: 0;
-    bottom: 16px;
-    color: #aaa;
-    font-size: 1.4em;
-    cursor: pointer;
+  position: absolute;
+  right: 0;
+  bottom: 16px;
+  color: #aaa;
+  font-size: 1.4em;
+  cursor: pointer;
 }
 </style>
